@@ -1,0 +1,39 @@
+extends ../layouts/default
+
+block content
+  h1= title + ', page: ' + currentPage
+  .container
+    .row
+      .col-md-12
+        table.table.table-striped
+          thead
+            tr
+              th(style="width: 300px;") Image
+              th Description
+              th(style="width: 350px;")
+              th(style="width: 70px;")
+              th(style="width: 100px;")
+              th(style="width: 100px;")
+          tbody
+            each design in designs
+              tr
+                td
+                  img.img-thumbnail(data-src='design.imageURL', alt='200x200', src=design.imageURL, data-holder-rendered='true', style='width: 300px;')
+                td= design.description
+                td
+                  ul
+                    li= 'ID: ' + design._id
+                    li= 'Summit Date: ' + design.createdAt
+                    li= 'Name: ' + (design.name || '')
+                    li= 'Email: ' + (design.email || '')
+                    li= 'Address: ' + (design.address || '')
+                    li= 'Phone: ' + (design.phone || '')
+                    li= 'Country: ' + (design.country || '')
+                td
+                  a.btn.btn-success(href='/admin/designs/'+(design.isPinned?'unpin':'pin')+'/'+design._id+"?originURL="+originUrl) #{(design.isPinned ? "Unpin" : "Pin")}
+                td
+                  a.btn.btn-success(href='/admin/designs/approve/'+design._id+"?originURL="+originUrl, class=design.status==='approved'?'disabled':'') Approve
+                td
+                  a.btn.btn-danger(href='/admin/designs/reject/'+design._id+"?originURL="+originUrl, class=design.status==='rejected'?'disabled':'') Reject
+
+  include ../layouts/_paginate
